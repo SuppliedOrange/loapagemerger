@@ -66,8 +66,6 @@
                 if (!bookID) return updateToast("error", "enter book id idiot")
             }
 
-            bookID = bookID.trim();
-
             fetch(
                     "https://lib-backend.snkdev.workers.dev/api/book?key=" +
                         bookID,
@@ -132,9 +130,35 @@
                 title.textContent = `Page ${pgNumber}`;
                 header.appendChild(title);
 
+                const upButton = document.createElement('button');
+                upButton.classList.add('btn');
+                upButton.style.marginLeft = "auto";
+                upButton.onclick = () => teleportPage(pgNumber - 1, pgNumber - 2);
+
+                const upIcon = document.createElement('i');
+                upIcon.classList.add("bi", "bi-arrow-up");
+                upIcon.style.fontSize = "2rem";
+
+                upButton.appendChild(upIcon);
+
+                header.appendChild(upButton)
+
+                const downButton = document.createElement('button');
+                downButton.classList.add('btn');
+                downButton.style.right = "1rem";
+                downButton.onclick = () => teleportPage(pgNumber - 1, pgNumber);
+
+                const downIcon = document.createElement('i');
+                downIcon.classList.add("bi", "bi-arrow-down");
+                downIcon.style.fontSize = "2rem";
+
+                downButton.appendChild(downIcon);
+
+                header.appendChild(downButton)
+
                 const removeButton = document.createElement('button');
                 removeButton.classList.add('btn');
-                removeButton.style.marginLeft = "auto";
+                removeButton.style.right = "1rem";
                 removeButton.onclick = () => removePage(pgNumber - 1);
 
                 const removeIcon = document.createElement('i');
@@ -171,6 +195,19 @@
             })
 
             savePages(pageArray)
+
+        }
+
+        function teleportPage(from, to) {
+
+            let pages = JSON.parse(localStorage.getItem("savedPages") || "");
+            if (!pages.length) return updateToast("error", "something went wrong wtf did u do");
+
+            if (to < 0 || to > pages.length) return;
+
+            [ pages[from], pages[to] ] = [ pages[to], pages[from] ];
+
+            loadPages(pages)
 
         }
 
