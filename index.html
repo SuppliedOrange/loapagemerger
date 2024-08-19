@@ -66,6 +66,8 @@
                 if (!bookID) return updateToast("error", "enter book id idiot")
             }
 
+            bookID = bookID.trim();
+
             fetch(
                     "https://lib-backend.snkdev.workers.dev/api/book?key=" +
                         bookID,
