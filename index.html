@@ -176,6 +176,7 @@
                 const textarea = document.createElement('textarea');
                 textarea.classList.add('form-control', 'page-content');
                 textarea.textContent = content;
+                textarea.addEventListener("change", (event) => savePages());
 
                 cardBody.appendChild(textarea);
                 card.appendChild(header);
@@ -246,13 +247,11 @@
 
         }
 
-        async function savePages(pageArray) {
+        function savePages(pageArray) {
 
             if (pageArray) localStorage.setItem("savedPages", JSON.stringify(pageArray))
 
             else {
-
-                await new Promise(r => setTimeout(r, 10));
 
                 let pageContents = document.querySelectorAll(".page-content");
                 let pages = [];
@@ -270,8 +269,6 @@
 
 
         }
-
-        window.addEventListener( "keypress", async (event) => { await savePages() });
 
         window.addEventListener( "DOMContentLoaded", (event) => {
 
