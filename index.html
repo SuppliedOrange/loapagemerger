@@ -246,11 +246,13 @@
 
         }
 
-        function savePages(pageArray) {
+        async function savePages(pageArray) {
 
             if (pageArray) localStorage.setItem("savedPages", JSON.stringify(pageArray))
 
             else {
+
+                await new Promise(r => setTimeout(r, 10));
 
                 let pageContents = document.querySelectorAll(".page-content");
                 let pages = [];
@@ -269,7 +271,7 @@
 
         }
 
-        window.addEventListener( "keydown", (event) => { savePages() })
+        window.addEventListener( "keypress", async (event) => { await savePages() });
 
         window.addEventListener( "DOMContentLoaded", (event) => {
 
