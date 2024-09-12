@@ -62,7 +62,7 @@
         function loadBook(bookID) {
 
             if (!bookID) {
-                bookID = document.getElementById("book-id").value;
+                bookID = document.getElementById("book-id").value.trim();
                 if (!bookID) return updateToast("error", "enter book id idiot")
             }
 
@@ -87,6 +87,13 @@
                     });
 
 
+        }
+
+        function loadDefault() {
+
+            savePages([""]);
+
+            
         }
 
         function loadPages(pageArray) {
@@ -185,7 +192,7 @@
                 pageHolder.appendChild(card);
             }
 
-            createInsertPageButton(null, 1);
+            createInsertPageButton(0);
 
             pageArray.forEach( (page, index) => {
 
@@ -226,9 +233,10 @@
         function insertPage(atIndex) {
 
             let pages = JSON.parse(localStorage.getItem("savedPages") || "");
-            if (!pages.length) return updateToast("error", "something went wrong wtf did u do")
 
-            pages.splice(atIndex, 0, "");
+            if (!pages.length) pages.splice(0, 1, "");
+
+            else pages.splice(atIndex, 0, "");
 
             loadPages(pages);
 
@@ -283,6 +291,12 @@
 
             let saved = localStorage.getItem("savedPages");
             if (saved) loadPages(JSON.parse(saved));
+
+            else {
+                savePages([""]);
+                saved = localStorage.getItem("savedPages");
+                loadPages(JSON.parse(saved));
+            }
 
         })
 
